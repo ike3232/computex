@@ -22,10 +22,15 @@ jobs:
 
     - name: Install dependencies
       run: npm install
-      working-directory: /home/anthony/commonapp
+      working-directory: /home/anthony/commonapp/ComputexFrontend
+
+    - name: Show package.json
+      run: cat package.json
+      working-directory: /home/anthony/commonapp/ComputexFrontend
 
     - name: Build React app
       run: npm run build
+      working-directory: /home/anthony/commonapp/ComputexFrontend
 
     - name: Build Docker image
       run: |
@@ -54,5 +59,3 @@ jobs:
         cd terraform
         terraform init
         terraform apply -auto-approve
-
-# Don't forget to add your GCP service account key and DockerHub token as secrets in your repository settings.
