@@ -22,7 +22,7 @@ jobs:
 
     - name: Install dependencies
       run: npm install
-      working-directory: /home/anthony/commonapp/ComputexFrontend
+      working-directory: /home/anthony/commonapp
 
     - name: Build React app
       run: npm run build
