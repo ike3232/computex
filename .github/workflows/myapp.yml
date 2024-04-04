@@ -22,6 +22,7 @@ jobs:
 
     - name: Install dependencies
       run: npm install
+      uses: /home/anthony/.config/gcloud/application_default_credentials.json
 
     - name: Build React app
       run: npm run build
