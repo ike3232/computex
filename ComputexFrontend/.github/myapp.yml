@@ -1,0 +1,57 @@
+name: Deploy to GCP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        project_id: your-project-id
+        export_default_credentials: true
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build React app
+      run: npm run build
+
+    - name: Build Docker image
+      run: |
+        docker build -t your-dockerhub-username/your-image-name .
+        docker login -u your-dockerhub-username -p ${{ secrets.DOCKERHUB_TOKEN }}
+        docker push your-dockerhub-username/your-image-name
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        project_id: your-project-id
+        export_default_credentials: true
+
+    - name: Deploy using Terraform
+      run: |
+        # Assuming you have Terraform scripts in a directory called 'terraform'
+        cd terraform
+        terraform init
+        terraform apply -auto-approve
+
+# Don't forget to add your GCP service account key and DockerHub token as secrets in your repository settings.

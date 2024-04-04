@@ -1,0 +1,13 @@
+.App {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* This ensures that padding and borders do not add extra width */
+}
+
+
+.divider {
+  height: 4px;
+  background: linear-gradient(90deg, #2c3e50, #3498db);
+  transform-origin: left;
+}

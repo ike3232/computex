@@ -1,0 +1,25 @@
+.sectionContainer {
+    padding: 20px;
+    margin: 20px 0;
+    width:80% !important;
+  }
+  
+  .sectionTitle {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #007bff;
+  }
+  
+  .sectionGrid {
+    display: flex;
+    overflow-x: auto;
+    width:80% !important;
+  }
+  
+  /* Style the product cards if you're using custom card components, or you can use Bootstrap's card styles */
+  .productCard {
+    min-width: 200px;
+    margin-right: 10px;
+    /* Add other styles as needed */
+  }
+  
