@@ -1,4 +1,4 @@
-name: Deploy to GCP
+*name: Deploy to GCP
 
 on:
   push:
@@ -34,7 +34,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t 1k3232/webapp .
+        docker build -t 1k3232/webapp ./ComputexFrontend
         docker login -u ik3232 -p ${{ secrets.DOCKERHUB_TOKEN }}
         docker push ik3232/webapp
 
