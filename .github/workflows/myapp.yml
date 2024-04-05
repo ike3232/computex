@@ -22,15 +22,15 @@ jobs:
 
     - name: Install dependencies
       run: npm install
-      working-directory: ~/commonapp/ComputexFrontend/package.json
+      working-directory: /home/anthony/commonapp/ComputexFrontend
 
     - name: Show package.json
       run: cat package.json
-      working-directory: ~/commonapp/ComputexFrontend/package.json
+      working-directory: /home/anthony/commonapp/ComputexFrontend
 
     - name: Build React app
       run: npm run build
-      working-directory: ~/commonapp/ComputexFrontend/package.json
+      working-directory: /home/anthony/commonapp/ComputexFrontend
 
     - name: Build Docker image
       run: |
