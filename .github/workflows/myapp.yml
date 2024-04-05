@@ -48,15 +48,12 @@ jobs:
 
     - name: Set up Google Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
-
       with:
         service_account_key: ${{ secrets.GCP_SA_KEY }}
-        project_id: your-project-id
+        project_id: protean-topic-411511  # Replace with your actual project ID
         export_default_credentials: true
 
     - name: Deploy using Terraform
       run: |
-        # Assuming you have Terraform scripts in a directory called 'terraform'
-        cd terraform
         terraform init
         terraform apply -auto-approve
