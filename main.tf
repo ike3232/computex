@@ -14,8 +14,9 @@ variable "zone" {
   default     = "us-central1-a"
 }
 
+# Prompt for Google Cloud credentials
 variable "google_credentials" {
-  description = "-var"
+  description = "Google Cloud credentials in JSON format"
   type        = string
 }
 
