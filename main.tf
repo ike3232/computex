@@ -15,7 +15,7 @@ variable "zone" {
 }
 
 # Prompt for Google Cloud credentials
-variable "google_credentials" {
+variable = "google_credentials" {
   description = "Google Cloud credentials in JSON format"
   type        = string
 }
