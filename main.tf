@@ -20,12 +20,11 @@ provider "google" {
   region  = var.region
   
   # Set the credentials using GitHub secret
-  credentials = jsondecode(data.github_secret.application_default_credentials_json.secret_contents)
+  credentials = jsondecode(var.google_credentials)
 }
 
-data "github_secret" "application_default_credentials_json" {
-  secret_name = "" # Replace with the name of your GitHub secret
-}
+
+
 
 
 # Create Google Kubernetes Engine cluster
