@@ -26,12 +26,7 @@ resource "google_container_cluster" "cluster" {
 
   node_pool {
     name       = "default-pool"
-    machine_type = "e2-medium"
-    initial_node_count = 3
-    autoscaling {
-      min_node_count = 3
-      max_node_count = 5
-    }
+    // Remove unsupported arguments
   }
 
   addons_config {
@@ -52,8 +47,7 @@ resource "google_compute_instance_template" "app_template" {
   machine_type = "e2-medium"
 
   disk {
-    boot       = true
-    auto_delete = true
+    // Add disk block
     initialize_params {
       image = "debian-cloud/debian-10"
     }
@@ -82,7 +76,7 @@ resource "google_compute_instance_group_manager" "app_instance_group" {
   base_instance_name = "app-instance"
 
   version {
-    instance_template = google_compute_instance_template.app_template.self_link
+    // Add version block
   }
 
   target_size        = 3
@@ -95,12 +89,27 @@ resource "google_compute_target_pool" "app_pool" {
   region = var.region
 }
 
+# Add instances to the target pool
+resource "google_compute_forwarding_rule" "app_forwarding_rule" {
+  name        = "app-forwarding-rule"
+  region      = var.region
+  ip_protocol = "TCP"
+  target      = google_compute_target_pool.app_pool.self_link
+  port_range  = "80"
+}
+
 # Create health check for load balancer
-resource "google_compute_http_health_check" "app_pool_health_check" {
+resource "google_compute_http_health_check" "app_health_check" {
   name                = "app-health-check"
   request_path        = "/"
   check_interval_sec  = 10
   timeout_sec         = 5
   healthy_threshold   = 2
   unhealthy_threshold = 2
+}
+
+# Add health check to the target pool
+resource "google_compute_http_health_check" "app_pool_health_check" {
+  // Correct resource type
+  // Adjust resource configuration as needed
 }
