@@ -18,6 +18,11 @@ variable "zone" {
 provider "google" {
   project = var.project_id != "" ? var.project_id : null # Set project to null if it's empty
   region  = var.region
+  variable "google_credentials" {
+  description = "google_credentials"
+  type        = string
+}
+
   
   # Set the credentials using GitHub secret
   credentials = jsondecode(var.google_credentials)
