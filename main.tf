@@ -55,7 +55,7 @@ resource "google_compute_instance_template" "app_template" {
   disk {
     boot       = true
     auto_delete = true
-    image = "debian-cloud/debian-10"
+    
   }
 
   network_interface {
