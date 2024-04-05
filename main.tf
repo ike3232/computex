@@ -1,6 +1,7 @@
 # Define variables
 variable "project_id" {
   description = "Google Cloud project ID"
+  type        = string # Ensure the variable type is explicitly set to string
 }
 
 variable "region" {
@@ -15,7 +16,7 @@ variable "zone" {
 
 # Set up Google Cloud provider
 provider "google" {
-  project = var.project_id
+  project = var.project_id != "" ? var.project_id : null # Set project to null if it's empty
   region  = var.region
 }
 
