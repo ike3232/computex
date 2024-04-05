@@ -50,10 +50,12 @@ jobs:
       uses: google-github-actions/setup-gcloud@v1
       with:
         service_account_key: ${{ secrets.GCP_SA_KEY }}
-        project_id: protean-topic-411511  # Replace with your actual project ID
+        project_id: ${{ secrets.PROJECT_ID }}  # Pass the project ID as an environment variable
         export_default_credentials: true
 
     - name: Deploy using Terraform
       run: |
         terraform init
         terraform apply -auto-approve
+      env:
+        GOOGLE_PROJECT: ${{ secrets.PROJECT_ID }}  # Pass project ID to Terraform
