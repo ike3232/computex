@@ -18,7 +18,7 @@ variable "zone" {
 provider "google" {
   project = var.project_id != "" ? var.project_id : null # Set project to null if it's empty
   region  = var.region
-  provider "google" {
+   {
   credentials = file("/home/anthony/.config/gcloud/application_default_credentials.json")
 }
 
