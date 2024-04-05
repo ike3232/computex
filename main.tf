@@ -25,8 +25,8 @@ resource "google_container_cluster" "cluster" {
   location = var.zone
 
   node_pool {
-    name       = "default-pool"
-    machine_type = "e2-medium"
+    name         = "default-pool"
+    machine_type = "e2-medium"  # Specify machine_type within node_pool block
     initial_node_count = 3
     autoscaling {
       min_node_count = 3
@@ -40,9 +40,13 @@ resource "google_container_cluster" "cluster" {
     }
   }
 
-  node_config {
-    preemptible  = false
-    disk_size_gb = 100
+  master_auth {
+    username = ""
+    password = ""
+
+    client_certificate_config {
+      issue_client_certificate = false
+    }
   }
 }
 
