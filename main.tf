@@ -15,7 +15,7 @@ variable "zone" {
 }
 
 variable "google_credentials" {
-  description = "Google Cloud credentials in JSON format"
+  description = "-var"
   type        = string
 }
 
