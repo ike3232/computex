@@ -16,12 +16,16 @@ variable "zone" {
 
 # Set up Google Cloud provider
 provider "google" {
-  project    = var.project_id != "" ? var.project_id : null # Set project to null if it's empty
-  region     = var.region
+  project = var.project_id != "" ? var.project_id : null # Set project to null if it's empty
+  region  = var.region
   
-  # Set the path to the application default credentials file
-  credentials = file("/home/anthony/.config/gcloud/application_default_credentials.json")
+  # Set the credentials using GitHub secret
+  credentials = jsondecode(data.github_secret.application_default_credentials_json.secret_contents)
 }
+
+data "github_secret" "application_default_credentials_json" {
+  secret_name = "" # Replace with the name of your GitHub secret
+}GCP_KEY
 
 # Create Google Kubernetes Engine cluster
 resource "google_container_cluster" "cluster" {
