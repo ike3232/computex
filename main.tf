@@ -26,7 +26,7 @@ resource "google_container_cluster" "cluster" {
 
   node_pool {
     name         = "default-pool"
-    machine_type = "e2-medium"  # Specify machine_type within node_pool block
+    
     initial_node_count = 3
     autoscaling {
       min_node_count = 3
