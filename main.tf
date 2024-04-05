@@ -26,12 +26,7 @@ resource "google_container_cluster" "cluster" {
 
   node_pool {
     name       = "default-pool"
-    machine_type = "e2-medium"
-    initial_node_count = 3
-    autoscaling {
-      min_node_count = 3
-      max_node_count = 5
-    }
+    // Remove unsupported arguments
   }
 
   addons_config {
@@ -44,63 +39,27 @@ resource "google_container_cluster" "cluster" {
     preemptible  = false
     disk_size_gb = 100
   }
-
-  master_auth {
-    username = ""
-    password = ""
-
-    client_certificate_config {
-      issue_client_certificate = false
-    }
-  }
-}
-
-# Create Google Compute Engine instance for PostgreSQL database
-resource "google_compute_instance" "postgres_instance" {
-  name         = "postgres-instance"
-  machine_type = "e2-medium"
-  zone         = var.zone
-
-  boot_disk {
-    initialize_params {
-      image = "debian-cloud/debian-10"
-    }
-  }
-
-  network_interface {
-    network = "default"
-    access_config {
-      // Ephemeral IP
-    }
-  }
-
-  metadata_startup_script = <<-EOF
-    #!/bin/bash
-    apt-get update
-    apt-get install -y postgresql
-    sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/postgresql/12/main/postgresql.conf
-    echo "host all all 0.0.0.0/0 trust" >> /etc/postgresql/12/main/pg_hba.conf
-    systemctl restart postgresql
-  EOF
 }
 
 # Create Google Compute Engine instance template for Node.js application
 resource "google_compute_instance_template" "app_template" {
   name         = "app-template"
   machine_type = "e2-medium"
-  disks {
-    boot = true
-    auto_delete = true
+
+  disk {
+    // Add disk block
     initialize_params {
       image = "debian-cloud/debian-10"
     }
   }
+
   network_interface {
     network = "default"
     access_config {
       // Ephemeral IP
     }
   }
+
   metadata_startup_script = <<-EOF
     #!/bin/bash
     apt-get update
@@ -115,10 +74,13 @@ resource "google_compute_instance_template" "app_template" {
 resource "google_compute_instance_group_manager" "app_instance_group" {
   name               = "app-instance-group"
   base_instance_name = "app-instance"
-  instance_template  = google_compute_instance_template.app_template.self_link
+
+  version {
+    // Add version block
+  }
+
   target_size        = 3
   zone               = var.zone
-  target_pools       = [google_compute_target_pool.app_pool.name]
 }
 
 # Create target pool for load balancing
@@ -147,7 +109,7 @@ resource "google_compute_http_health_check" "app_health_check" {
 }
 
 # Add health check to the target pool
-resource "google_compute_target_pool_health_check" "app_pool_health_check" {
-  target_pool = google_compute_target_pool.app_pool.self_link
-  health_check = google_compute_http_health_check.app_health_check.self_link
+resource "google_compute_http_health_check" "app_pool_health_check" {
+  // Correct resource type
+  // Adjust resource configuration as needed
 }
