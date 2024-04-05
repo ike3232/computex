@@ -16,12 +16,11 @@ variable "zone" {
 
 # Set up Google Cloud provider
 provider "google" {
-  project = var.project_id != "" ? var.project_id : null # Set project to null if it's empty
-  region  = var.region
-  provider "google" {
+  project    = var.project_id != "" ? var.project_id : null # Set project to null if it's empty
+  region     = var.region
+  
+  # Set the path to the application default credentials file
   credentials = file("/home/anthony/.config/gcloud/application_default_credentials.json")
-}
-
 }
 
 # Create Google Kubernetes Engine cluster
@@ -66,7 +65,7 @@ resource "google_compute_instance_template" "app_template" {
   network_interface {
     network = "default"
     access_config {
-      // Ephemeral IP
+      # Ephemeral IP
     }
   }
 
