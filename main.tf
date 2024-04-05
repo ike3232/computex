@@ -41,9 +41,6 @@ resource "google_container_cluster" "cluster" {
   }
 
   master_auth {
-    username = ""
-    password = ""
-
     client_certificate_config {
       issue_client_certificate = false
     }
@@ -78,33 +75,4 @@ resource "google_compute_instance_template" "app_template" {
     systemctl start docker
     docker run -d --restart=always -p 80:3000 ik3232/e-commerce
   EOF
-}
-
-# Create managed instance group for Node.js application
-resource "google_compute_instance_group_manager" "app_instance_group" {
-  name               = "app-instance-group"
-  base_instance_name = "app-instance"
-
-  version {
-    instance_template = google_compute_instance_template.app_template.self_link
-  }
-
-  target_size        = 3
-  zone               = var.zone
-}
-
-# Create target pool for load balancing
-resource "google_compute_target_pool" "app_pool" {
-  name = "app-pool"
-  region = var.region
-}
-
-# Create health check for load balancer
-resource "google_compute_http_health_check" "app_pool_health_check" {
-  name                = "app-health-check"
-  request_path        = "/"
-  check_interval_sec  = 10
-  timeout_sec         = 5
-  healthy_threshold   = 2
-  unhealthy_threshold = 2
 }
