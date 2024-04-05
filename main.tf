@@ -14,23 +14,19 @@ variable "zone" {
   default     = "us-central1-a"
 }
 
-# Set up Google Cloud provider
-provider "google" {
-  project = var.project_id != "" ? var.project_id : null # Set project to null if it's empty
-  region  = var.region
-  variable "google_credentials" {
-  description = "google_credentials"
+variable "google_credentials" {
+  description = "Google Cloud credentials in JSON format"
   type        = string
 }
 
+# Set up Google Cloud provider
+provider "google" {
+  project     = var.project_id != "" ? var.project_id : null # Set project to null if it's empty
+  region      = var.region
   
-  # Set the credentials using GitHub secret
+  # Set the credentials using the provided credentials
   credentials = jsondecode(var.google_credentials)
 }
-
-
-
-
 
 # Create Google Kubernetes Engine cluster
 resource "google_container_cluster" "cluster" {
