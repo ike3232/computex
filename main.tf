@@ -26,7 +26,7 @@ provider "google" {
 data "github_secret" "application_default_credentials_json" {
   secret_name = "" # Replace with the name of your GitHub secret
 }
-"="GCP_KEY
+"="
 
 # Create Google Kubernetes Engine cluster
 resource "google_container_cluster" "cluster" {
