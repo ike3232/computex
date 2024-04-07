@@ -27,7 +27,7 @@ provider "google" {
   region      = var.region
   
   # Set the credentials using the provided credentials
-  credentials = var.google_credentials != "" ? jsondecode(var.google_credentials) : null
+  credentials = var.google_credentials != "" ? var.google_credentials : null
 }
 
 # Create Google Kubernetes Engine cluster
