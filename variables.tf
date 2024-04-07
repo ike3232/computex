@@ -1,5 +1,6 @@
 variable "credentials_file" {
   description = "Path to the Google Cloud credentials JSON file"
+  default     = "path/to/your/credentials.json"  # Set a default value or leave it empty
 }
 
 variable "project_id" {
@@ -28,4 +29,5 @@ variable "image" {
 
 variable "startup_script" {
   description = "StartupScript for the GCE instance"
+  default     = ""  # Set a default value or leave it empty
 }
