@@ -1,6 +1,6 @@
 # Define provider
 provider "google" {
-  credentials = file(var.credentials_file)  # Update this line with the path to the Google Cloud credentials JSON file
+  credentials = file("/home/anthony/.config/gcloud/application_default_credentials.json")  # Update this line with the path to the Google Cloud credentials JSON file
   project     = var.project_id
   region      = var.region
 }
