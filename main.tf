@@ -1,6 +1,6 @@
 # Define provider
 provider "google" {
-  credentials = file(var.credentials_file)
+  credentials = file(var.credentials_file)  # Update this line with the path to the Google Cloud credentials JSON file
   project     = var.project_id
   region      = var.region
 }
@@ -21,7 +21,7 @@ resource "google_compute_instance" "react_app_instance" {
       // Ephemeral IP
     }
   }
-  metadata_startup_script = var.startup_script
+  metadata_startup_script = var.startup_script  # Update this line with the startup script for configuring the instance
 }
 
 # Output the IP address of the deployed instance
