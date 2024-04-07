@@ -18,6 +18,7 @@ variable "zone" {
 variable "google_credentials" {
   description = "Google Cloud credentials in JSON format"
   type        = string
+  default     = "{}" # Default value set to an empty JSON object
 }
 
 # Set up Google Cloud provider
