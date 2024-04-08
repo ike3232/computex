@@ -45,9 +45,10 @@ jobs:
         terraform_version: 1.0.0
 
     - name: Deploy using Terraform
-      run: |
-        echo "$GOOGLE_CREDENTIALS" > /tmp/gcp_credentials.json
-        terraform init
-        terraform apply -auto-approve -var="google_credentials=$(cat /tmp/gcp_credentials.json)" -var="project_id=${{ secrets.PROJECT_ID }}"
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
+        GOOGLE_CREDENTIALS: ${{ secrets.google_credentials }}
+        PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      run: |
+        echo "$google_credentials" > /tmp/gcp_credentials.json
+        terraform init
+        terraform apply -auto-approve -var="google_credentials_file=/tmp/gcp_credentials.json" -var="project_id=$PROJECT_ID"
