@@ -1,6 +1,6 @@
 # Define provider
 provider "google" {
-  credentials = file(var.google_credentials_path)
+  credentials = var.google_credentials
   project     = var.project_id
   region      = "us-central1"  # Specify the region directly
 }
@@ -30,10 +30,10 @@ output "instance_public_ip" {
 }
 
 # Variables
-variable "google_credentials_path" {
-  description = "Path to the Google Cloud credentials JSON file"
+variable "google_credentials" {
+  description = "Google Cloud credentials JSON object"
   type        = string
-  default     = "/home/anthony/.config/gcloud/application_default_credentials.json"  # Default value for local testing
+  sensitive   = true
 }
 
 variable "project_id" {

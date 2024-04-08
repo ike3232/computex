@@ -13,13 +13,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1
-      with:
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        project_id: protean-topic-411511
-        export_default_credentials: true
-
     - name: Install dependencies
       run: npm install
       working-directory: ./ComputexFrontend
@@ -46,14 +39,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1
-      with:
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        project_id: ${{ secrets.PROJECT_ID }}  # Pass the project ID as an environment variable
-        export_default_credentials: true
-
     - name: Deploy using Terraform
       run: |
+        echo "$GOOGLE_CREDENTIALS" > /tmp/gcp_credentials.json
         terraform init
-        terraform apply -auto-approve -var="project_id=${{ secrets.PROJECT_ID }}"
+        terraform apply -auto-approve -var="google_credentials=$(cat /tmp/gcp_credentials.json)" -var="project_id=${{ secrets.PROJECT_ID }}"
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
