@@ -1,15 +1,15 @@
 # Define provider
 provider "google" {
-  credentials = file("/home/anthony/.config/gcloud/application_default_credentials.json")  # Update this line with the path to the Google Cloud credentials JSON file
+  credentials = file(var.google_credentials_path)
   project     = var.project_id
-  region      = var.region
+  region      = "us-central1"  # Specify the region directly
 }
 
-# Google Compute Engine instance to host the React application
+# Google Compute Engine e2 instance to host the React application
 resource "google_compute_instance" "react_app_instance" {
   name         = "react-app-instance"
-  machine_type = var.machine_type
-  zone         = var.zone
+  machine_type = "e2-micro"  # Specify the e2 micro machine type directly
+  zone         = "us-central1-a"   # Specify the zone directly
   boot_disk {
     initialize_params {
       image = var.image
@@ -27,4 +27,28 @@ resource "google_compute_instance" "react_app_instance" {
 # Output the IP address of the deployed instance
 output "instance_public_ip" {
   value = google_compute_instance.react_app_instance.network_interface.0.access_config.0.nat_ip
+}
+
+# Variables
+variable "google_credentials_path" {
+  description = "Path to the Google Cloud credentials JSON file"
+  type        = string
+  default     = "/home/anthony/.config/gcloud/application_default_credentials.json"  # Default value for local testing
+}
+
+variable "project_id" {
+  description = "Google Cloud Project ID"
+  type        = string
+}
+
+variable "image" {
+  description = "Image for the compute instance"
+  type        = string
+  default     = "debian-cloud/debian-10"  # You can change this to suit your needs
+}
+
+variable "startup_script" {
+  description = "Startup script for configuring the instance"
+  type        = string
+  default     = "#!/bin/bash\nsudo apt update && sudo apt install -y apache2"  # You can change this to suit your needs
 }
