@@ -39,6 +39,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.0.0
+
     - name: Deploy using Terraform
       run: |
         echo "$GOOGLE_CREDENTIALS" > /tmp/gcp_credentials.json
