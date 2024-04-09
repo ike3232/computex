@@ -1,54 +1,69 @@
-# Define provider
 provider "google" {
-  credentials = jsondecode(var.google_credentials)
-  project     = var.project_id
-  region      = "us-central1"  # Specify the region directly
+  credentials = file("/home/anthony/.config/gcloud/application_default_credentials.json")
+  project     = "protean-topic-411511"
+  region      = "us-central1"
+}
+variable "google_credentials" {
+  description = "Google Cloud service account credentials"
 }
 
-# Google Compute Engine e2 instance to host the React application
-resource "google_compute_instance" "react_app_instance" {
-  name         = "react-app-instance"
-  machine_type = "e2-micro"  # Specify the e2 micro machine type directly
-  zone         = "us-central1-a"   # Specify the zone directly
+
+# Define Google Compute Engine instances
+
+# Application Server
+resource "google_compute_instance" "app_instance" {
+  name         = "app-instance"
+  machine_type = "n1-standard-2"
+  zone         = "us-central1-c"
+
   boot_disk {
     initialize_params {
-      image = var.image
+      image = "debian-cloud/debian-10"
     }
   }
+
   network_interface {
     network = "default"
     access_config {
-      // Ephemeral IP
+      // Include a public IP address
     }
   }
-  metadata_startup_script = var.startup_script  # Update this line with the startup script for configuring the instance
+
+  metadata_startup_script = "sudo docker run -d -p 3000:3000 <DOCKER_IMAGE_NAME>"
 }
 
-# Output the IP address of the deployed instance
-output "instance_public_ip" {
-  value = google_compute_instance.react_app_instance.network_interface.0.access_config.0.nat_ip
+# Database Server
+resource "google_compute_instance" "db_instance" {
+  name         = "db-instance"
+  machine_type = "e2-micro"
+  zone         = "us-central1-c"
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-10"
+    }
+  }
+
+  network_interface {
+    network = "default"
+    access_config {
+      // Include a public IP address or configure private IP if needed
+    }
+  }
+
+  metadata_startup_script = <<-EOF
+    #!/bin/bash
+    # Install and configure your database server here
+    # Example: Install and configure MySQL
+    sudo apt-get update
+    sudo apt-get install -y mysql-server
+    sudo mysql_secure_installation
+  EOF
 }
 
-# Variables
-variable "google_credentials" {
-  description = "Google Cloud credentials JSON object"
-  type        = string
-  sensitive   = true
-}
+# Define firewall rules if necessary
 
-variable "project_id" {
-  description = "Google Cloud Project ID"
-  type        = string
-}
-
-variable "image" {
-  description = "Image for the compute instance"
-  type        = string
-  default     = "debian-cloud/debian-10"  # You can change this to suit your needs
-}
-
-variable "startup_script" {
-  description = "Startup script for configuring the instance"
-  type        = string
-  default     = "#!/bin/bash\nsudo apt update && sudo apt install -y apache2"  # You can change this to suit your needs
+# Output the public IP address of the application server
+output "app_instance_ip" {
+  value = google_compute_instance.app_instance.network_interface[0].access_config[0].nat_ip
 }
