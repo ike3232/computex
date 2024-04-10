@@ -8,10 +8,6 @@ variable "google_credentials" {
   description = "Google Cloud service account credentials"
 }
 
-variable "docker_image_name" {
-  description = "Name of the Docker image to run"
-}
-
 # Define Google Compute Engine instances
 
 # Application Server
