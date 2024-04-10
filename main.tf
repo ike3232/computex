@@ -1,19 +1,23 @@
 provider "google" {
-  credentials = file("/home/anthony/.config/gcloud/application_default_credentials.json")
+  credentials = var.google_credentials
   project     = "protean-topic-411511"
   region      = "us-central1"
 }
+
 variable "google_credentials" {
   description = "Google Cloud service account credentials"
 }
 
+variable "docker_image_name" {
+  description = "Name of the Docker image to run"
+}
 
 # Define Google Compute Engine instances
 
 # Application Server
 resource "google_compute_instance" "app_instance" {
   name         = "app-instance"
-  machine_type = "n1-standard-2"
+  machine_type = "e2-micro"
   zone         = "us-central1-c"
 
   boot_disk {
@@ -29,7 +33,11 @@ resource "google_compute_instance" "app_instance" {
     }
   }
 
-  metadata_startup_script = "sudo docker run -d -p 3000:3000 <DOCKER_IMAGE_NAME>"
+  metadata_startup_script = <<-EOF
+    #!/bin/bash
+    # Run Docker container
+    sudo docker run -d -p 3000:3000 ${var.docker_image_name}
+  EOF
 }
 
 # Database Server
