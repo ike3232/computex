@@ -1,6 +1,6 @@
 resource "google_compute_instance_template" "example" {
   name        = "my-instance"
-  public_accesss_prevention = "enforced"
+
   machine_type = "e2-micro"
   
   disk {
