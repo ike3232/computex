@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.12" // Specify the required version of Terraform
+  required_version = ">= 1.1.2" // Specify the required version of Terraform
 }
 
 resource "google_compute_instance_template" "example" {
