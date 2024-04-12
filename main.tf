@@ -51,7 +51,7 @@ resource "google_compute_instance_group_manager" "example" {
   }
 }
 
-resource "google_compute_instance_group_manager" "example" {
+
   # Other configuration for the instance group manager...
 
   autoscaling {
@@ -62,5 +62,5 @@ resource "google_compute_instance_group_manager" "example" {
       target = 0.8
     }
   }
-}
+
 
