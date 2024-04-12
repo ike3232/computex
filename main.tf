@@ -1,5 +1,4 @@
 terraform {
-  required_version = ">= 0.13"
   required_providers {
     google = {
       source  = "hashicorp/google"
@@ -7,7 +6,6 @@ terraform {
     }
   }
 }
-
 
 provider "google" {
   # Configuration options
@@ -29,7 +27,7 @@ resource "google_compute_instance_template" "example" {
     }
   }
 
-  metadata_startup_script = "sudo apt-get update && sudo apt-get install -y nodejs npm && git clone git@github.com:ike3232/computex.git && cd /home/anthony/computex && npm install && npm start"
+  metadata_startup_script = "sudo apt-get update && sudo apt-get install -y nodejs npm && git clone  && cd /home/anthony/computex && npm install && npm start"
 }
 
 resource "google_compute_health_check" "basic" {
@@ -41,12 +39,11 @@ resource "google_compute_health_check" "basic" {
   }
 }
 
-resource "google_compute_instance_group_manager" "example" {version = "5.24.0" 
+resource "google_compute_instance_group_manager" "example" {
   name               = "example-instance-group-manager"
   base_instance_name = "example-instance"
   zone               = "us-central1-a"
   target_size        = 1
-
 
   auto_healing_policies {
     health_check      = google_compute_health_check.basic.self_link
@@ -63,6 +60,8 @@ resource "google_compute_instance_group_manager" "example" {version = "5.24.0"
     port = 80
   }
 }
+
+
 
 resource "google_compute_autoscaler" "example_autoscaler" {
   name               = "example-autoscaler"
