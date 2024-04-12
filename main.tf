@@ -30,7 +30,7 @@ resource "google_compute_health_check" "basic" {
 resource "google_compute_instance_group_manager" "example" {
   name               = "example-instance-group-manager"
   base_instance_name = "example-instance"
-  instance_template  = google_compute_instance_template.example.self_link
+
   zone               = "us-central1-a"   # Change to your preferred zone
 
   target_size = 1  # Initial number of instances
@@ -50,7 +50,7 @@ resource "google_compute_instance_group_manager" "example" {
     port = 80
   }
 
-  autoscaler {
+  {
     min_instances = 1
     max_instances = 10
     cool_down_period_sec = 60
