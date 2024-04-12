@@ -49,8 +49,6 @@ resource "google_compute_instance_group_manager" "example" {
     name = "http"
     port = 80
   }
-}
-
 
   # Other configuration for the instance group manager...
 
@@ -62,5 +60,7 @@ resource "google_compute_instance_group_manager" "example" {
       target = 0.8
     }
   }
+
+}
 
 
