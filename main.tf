@@ -50,7 +50,10 @@ resource "google_compute_instance_group_manager" "example" {
     port = 80
   }
 
-  {
+resource "google_compute_instance_group_manager" "example" {
+  # Other configuration for the instance group manager...
+
+  autoscaling {
     min_instances = 1
     max_instances = 10
     cool_down_period_sec = 60
@@ -59,3 +62,4 @@ resource "google_compute_instance_group_manager" "example" {
     }
   }
 }
+
