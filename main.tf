@@ -1,73 +1,62 @@
-provider "google" {
-  credentials = var.google_credentials
-  project     = "protean-topic-411511"
-  region      = "us-central1"
-}
-
-variable "google_credentials" {
-  description = "Google Cloud service account credentials"
-}
-
-# Define Google Compute Engine instances
-
-# Application Server
-resource "google_compute_instance" "app_instance" {
-  name         = "app-instance"
+resource "google_compute_instance_template" "example" {
+  name        = "my-instance"
+  project = "my-app_instance"
+  public_accesss_prevention = "enforced"
   machine_type = "e2-micro"
-  zone         = "us-central1-c"
-
-  boot_disk {
-    initialize_params {
-      image = "debian-cloud/debian-10"
-    }
+  
+  disk {
+    source_image = "debian-cloud/debian-10"  # Change to your preferred OS image
+    auto_delete  = true
   }
 
   network_interface {
     network = "default"
     access_config {
-      // Include a public IP address
+      // Ephemeral IP
     }
   }
 
-  metadata_startup_script = <<-EOF
-    #!/bin/bash
-    # Run Docker container
-    sudo docker run -d -p 3000:3000 ${var.docker_image_name}
-  EOF
+  metadata_startup_script = "sudo apt-get update && sudo apt-get install -y nodejs npm && git clone your_repo_url && cd your_repo_directory && npm install && npm start"
 }
 
-# Database Server
-resource "google_compute_instance" "db_instance" {
-  name         = "db-instance"
-  machine_type = "e2-micro"
-  zone         = "us-central1-c"
-
-  boot_disk {
-    initialize_params {
-      image = "debian-cloud/debian-10"
-    }
+resource "google_compute_health_check" "basic" {
+  name               = "basic-check"
+  check_interval_sec = 1
+  timeout_sec        = 1
+  tcp_health_check {
+    port = 80
   }
-
-  network_interface {
-    network = "default"
-    access_config {
-      // Include a public IP address or configure private IP if needed
-    }
-  }
-
-  metadata_startup_script = <<-EOF
-    #!/bin/bash
-    # Install and configure your database server here
-    # Example: Install and configure MySQL
-    sudo apt-get update
-    sudo apt-get install -y mysql-server
-    sudo mysql_secure_installation
-  EOF
 }
 
-# Define firewall rules if necessary
+resource "google_compute_instance_group_manager" "example" {
+  name               = "example-instance-group-manager"
+  base_instance_name = "example-instance"
+  instance_template  = google_compute_instance_template.example.self_link
+  zone               = "us-central1-a"   # Change to your preferred zone
 
-# Output the public IP address of the application server
-output "app_instance_ip" {
-  value = google_compute_instance.app_instance.network_interface[0].access_config[0].nat_ip
+  target_size = 1  # Initial number of instances
+
+  auto_healing_policies {
+    health_check      = google_compute_health_check.basic.self_link
+    initial_delay_sec = 60
+  }
+
+  update_policy {
+    type = "PROACTIVE"
+    minimal_action = "REPLACE"
+  }
+
+  named_port {
+    name = "http"
+    port = 80
+  }
+
+  autoscaler {
+    min_instances = 1
+    max_instances = 10
+    cool_down_period_sec = 60
+    cpu_utilization {
+      target = 0.8
+    }
+  }
 }
