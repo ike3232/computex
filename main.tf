@@ -1,10 +1,13 @@
+terraform {
+  required_version = ">= 0.12" // Specify the required version of Terraform
+}
+
 resource "google_compute_instance_template" "example" {
   name        = "my-instance"
-
   machine_type = "e2-micro"
   
   disk {
-    source_image = "debian-cloud/debian-10"  # Change to your preferred OS image
+    source_image = "debian-cloud/debian-10"
     auto_delete  = true
   }
 
@@ -30,10 +33,8 @@ resource "google_compute_health_check" "basic" {
 resource "google_compute_instance_group_manager" "example" {
   name               = "example-instance-group-manager"
   base_instance_name = "example-instance"
-
-  zone               = "us-central1-a"   # Change to your preferred zone
-
-  target_size = 1  # Initial number of instances
+  zone               = "us-central1-a"
+  target_size        = 1
 
   auto_healing_policies {
     health_check      = google_compute_health_check.basic.self_link
@@ -41,7 +42,7 @@ resource "google_compute_instance_group_manager" "example" {
   }
 
   update_policy {
-    type = "PROACTIVE"
+    type          = "PROACTIVE"
     minimal_action = "REPLACE"
   }
 
@@ -49,18 +50,16 @@ resource "google_compute_instance_group_manager" "example" {
     name = "http"
     port = 80
   }
-
-  # Other configuration for the instance group manager...
-
-  autoscaling {
-    min_instances = 1
-    max_instances = 10
-    cool_down_period_sec = 60
-    cpu_utilization {
-      target = 0.8
-    }
-  }
-
 }
 
-
+resource "google_compute_autoscaler" "example_autoscaler" {
+  name               = "example-autoscaler"
+  zone               = "us-central1-a"
+  target            = google_compute_instance_group_manager.example.instance_group
+  autoscaling_policy {
+    min_replicas      = 1
+    max_replicas      = 10
+    cool_down_period_sec = 60
+    cpu_utilization_target = 0.8
+  }
+}
