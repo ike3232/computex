@@ -41,11 +41,12 @@ resource "google_compute_health_check" "basic" {
   }
 }
 
-resource "google_compute_instance_group_manager" "example" {
+resource "google_compute_instance_group_manager" "example" {version = "5.24.0" 
   name               = "example-instance-group-manager"
   base_instance_name = "example-instance"
   zone               = "us-central1-a"
   target_size        = 1
+
 
   auto_healing_policies {
     health_check      = google_compute_health_check.basic.self_link
