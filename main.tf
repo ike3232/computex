@@ -1,8 +1,7 @@
 terraform {
-  terraform {
   required_providers {
     google = {
-      source = "hashicorp/google"
+      source  = "hashicorp/google"
       version = "5.24.0"
     }
   }
@@ -11,11 +10,10 @@ terraform {
 provider "google" {
   # Configuration options
 }
-}
 
 resource "google_compute_instance_template" "example" {
-  name        = "my-instance"
-  machine_type = "e2-micro"
+  name          = "my-instance"
+  machine_type  = "e2-micro"
   
   disk {
     source_image = "debian-cloud/debian-10"
@@ -29,7 +27,7 @@ resource "google_compute_instance_template" "example" {
     }
   }
 
-  metadata_startup_script = "sudo apt-get update && sudo apt-get install -y nodejs npm && git clone your_repo_url && cd your_repo_directory && npm install && npm start"
+  metadata_startup_script = "sudo apt-get update && sudo apt-get install -y nodejs npm && git clone git@github.com:ike3232/computex.git && cd /home/anthony/computex && npm install && npm start"
 }
 
 resource "google_compute_health_check" "basic" {
@@ -66,11 +64,11 @@ resource "google_compute_instance_group_manager" "example" {
 resource "google_compute_autoscaler" "example_autoscaler" {
   name               = "example-autoscaler"
   zone               = "us-central1-a"
-  target            = google_compute_instance_group_manager.example.instance_group
+  target             = google_compute_instance_group_manager.example.instance_group
   autoscaling_policy {
-    min_replicas      = 1
-    max_replicas      = 10
-    cool_down_period_sec = 60
+    min_replicas           = 1
+    max_replicas           = 10
+    cool_down_period_sec   = 60
     cpu_utilization_target = 0.8
   }
 }
