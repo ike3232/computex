@@ -14,9 +14,7 @@ provider "google" {
 }
 
 
-provider "google" {
-  # Configuration options
-}
+
 
 resource "google_compute_instance" "default" {
   name         = "my-instance"
