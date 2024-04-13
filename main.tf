@@ -34,8 +34,4 @@ resource "google_compute_instance" "default" {
     }
   }
 
-  service_account {
-    email  = ${{ secrets.GOOGLE_GCP_SA_KEY}}
-    scopes = ["cloud-platform"]
-  }
-}
+
