@@ -1,6 +1,21 @@
-resource "google_service_account" "default" {
-  account_id   = "protean-topic-411511"
-  display_name = "my-Instance"
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+      version = "5.24.0"
+    }
+  }
+}
+
+
+provider "google" {
+  project     = "protean-topic-411511"
+  region      = "us-central1"
+}
+
+
+provider "google" {
+  # Configuration options
 }
 
 resource "google_compute_instance" "default" {
