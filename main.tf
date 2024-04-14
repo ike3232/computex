@@ -10,6 +10,11 @@ terraform {
 provider "google" {
   project = "protean-topic-411511"
   region  = "us-central1"
+
+  // Set environment variable for credentials
+  environment = {
+    GOOGLE_APPLICATION_CREDENTIALS = "/home/anthony/Downloads/protean-topic-411511-411ded71822e.json"
+  }
 }
 
 resource "google_compute_instance" "default" {
