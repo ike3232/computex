@@ -13,7 +13,7 @@ provider "google" {
 
   // Set environment variable for credentials
   environment = {
-    GOOGLE_APPLICATION_CREDENTIALS = "/home/anthony/Downloads/protean-topic-411511-411ded71822e.json"
+    GOOGLE_CREDENTIALS = "/home/anthony/Downloads/protean-topic-411511-411ded71822e.json"
   }
 }
 
