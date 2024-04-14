@@ -10,12 +10,12 @@ terraform {
 provider "google" {
   project = "protean-topic-411511"
   region  = "us-central1"
-}
 
-# Commented out environment variable, as it's set externally
-# environment = {
-#   GOOGLE_APPLICATION_CREDENTIALS = "/path/to/your/credentials.json"
-# }
+  // Set environment variable for credentials
+  environment = {
+    GOOGLE_CREDENTIALS = "/home/anthony/Downloads/protean-topic-411511-411ded71822e.json"
+  }
+}
 
 resource "google_compute_instance" "default" {
   name         = "my-instance"
