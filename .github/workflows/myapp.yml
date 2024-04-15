@@ -1,58 +1,24 @@
-name: Deploy to GCP
+name: Terraform-infrastructure
 
 on:
   push:
     branches:
       - main
 
+env:
+  TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+
 jobs:
-  build:
+  terraform:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Install dependencies
-      run: npm install
-      working-directory: ./ComputexFrontend
-
-    - name: Show package.json
-      run: cat package.json
-      working-directory: ./ComputexFrontend
-
-    - name: Build React app
-      run: npm run build
-      working-directory: ./ComputexFrontend
-
-    - name: Build Docker image
-      run: |
-        docker build -t ik3232/apple ./ComputexFrontend
-        docker login -u ik3232 -p ${{ secrets.DOCKERHUB_TOKEN }}
-        docker push ik3232/apple
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v3
-      
-
-    - name: Authenticate with Google Cloud
-      run: echo "$GOOGLE_CREDENTIALS" > /tmp/credentials.json
-
+    - uses: actions/checkout@v3
+    - uses: hashicorp/setup-terraform@v2
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
     - name: Terraform Init
       run: terraform init
-
-    - name: Terraform plan
+    - name: Terraform Plan
       run: terraform plan
-
     - name: Terraform Apply
-      env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
       run: terraform apply -auto-approve

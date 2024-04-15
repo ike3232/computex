@@ -1,5 +1,5 @@
 
-name: 'Terraform'
+name: 'application'
 
 on:
   push:
@@ -37,20 +37,3 @@ jobs:
 
 
     
-env:
-  TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-  GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-jobs:
-  terraform:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - uses: hashicorp/setup-terraform@v2
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-    - name: Terraform Init
-      run: terraform init
-    - name: Terraform Plan
-      run: terraform plan
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
