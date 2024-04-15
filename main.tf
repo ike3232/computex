@@ -5,6 +5,14 @@ terraform {
       version = "5.24.0"
     }
   }
+
+  cloud {
+    organization = "Ike3232"
+
+    workspaces {
+      name = "dev"
+    }
+  }  
 }
 
 provider "google" {
