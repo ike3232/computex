@@ -39,7 +39,7 @@ jobs:
     
 env:
   TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-
+  GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 jobs:
   terraform:
     runs-on: ubuntu-latest
