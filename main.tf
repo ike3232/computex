@@ -5,7 +5,11 @@ terraform {
       version = "5.24.0"
     }
   }
-
+provider "google" {
+  credentials = file("/home/anthony/.config/gcloud/application_default_credentials.json")
+  project     = "protean-topic-411511"
+  region      = "us-central1"
+}
   cloud {
     organization = "Ike3232"
 
