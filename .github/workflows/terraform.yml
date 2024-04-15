@@ -36,32 +36,21 @@ jobs:
         docker push ik3232/apple
 
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+    
+env:
+  TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: hashicorp/setup-terraform@v2
       with:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
     - name: Terraform Init
       run: terraform init
-
-    - name: Terraform Format
-      run: terraform fmt -check
-
-      env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_GCP_SA_KEY}}
-
     - name: Terraform Plan
-      run: terraform plan -input=false
-
-      env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_GCP_SA_KEY}}
-
+      run: terraform plan
     - name: Terraform Apply
-      run: terraform apply -auto-approve -input=false
-
-      env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_GCP_SA_KEY}}
+      run: terraform apply -auto-approve
