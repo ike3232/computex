@@ -3,8 +3,8 @@ name: 'application'
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -13,27 +13,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Install dependencies
-      run: npm install
-      working-directory: ./ComputexFrontend
-
-    - name: Show package.json
-      run: cat package.json
-      working-directory: ./ComputexFrontend
-
-    - name: Build React app
-      run: npm run build
-      working-directory: ./ComputexFrontend
-
-    - name: Build Docker image
-      run: |
-        docker build -t ik3232/apple ./ComputexFrontend
-        docker login -u ik3232 -p ${{ secrets.DOCKERHUB_TOKEN }}
-        docker push ik3232/apple
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+  
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./ComputexFrontend
+  
+      - name: Show package.json
+        run: cat package.json
+        working-directory: ./ComputexFrontend
+  
+      - name: Build React app
+        run: npm run build
+        working-directory: ./ComputexFrontend
+  
+      - name: Build Docker image
+        run: |
+          docker build -t ik3232/apple ./ComputexFrontend
+          docker login -u ik3232 -p ${{ secrets.DOCKERHUB_TOKEN }}
+          docker push ik3232/apple
 
 
     
