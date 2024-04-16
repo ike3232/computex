@@ -8,10 +8,11 @@ terraform {
 }
 
 provider "google" {
-  credentials = file("/home/anthony/Download/.config/gcloud/application_default_credentials.json")
-  project     = "protean-topic-411511"
-  region      = "us-central1"
+  credentials = var.google_credentials
+  project     = var.project_id
+  region      = var.region
 }
+
 
 resource "google_compute_instance" "default" {
   name         = "my-instance"
