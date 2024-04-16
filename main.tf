@@ -17,7 +17,7 @@ provider "google" {
 resource "google_compute_instance" "default" {
   name         = "my-instance"
   machine_type = "e2-micro"
-  zone         = "us-central1-b"
+  zone         = "southamerica-west1-a"
 
   boot_disk {
     initialize_params {
